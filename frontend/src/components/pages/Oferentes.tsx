@@ -88,7 +88,6 @@ const Oferentes: React.FC = () => {
           <div className="p-4 bg-red-50 text-red-600 rounded-md">{error}</div>
         ) : (
           <>
-            {/* Agrega este console.log para debug */}
 
             {Array.isArray(oferentes) && oferentes.length > 0 ? (
               <Table<Oferente>

@@ -18,12 +18,12 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const usuario = await this.usuarioRepository.findOne({
-      where: { Correo: loginDto.Correo },
+      where: { Nombre: loginDto.Usuario },
     });
 
     if (!usuario) {
       throw new BadRequestException({
-        Usuario: null,
+        Usuario: loginDto.Usuario,
         Resultado: false,
         message: 'Usuario y/o contraseña incorrectos',
       });
