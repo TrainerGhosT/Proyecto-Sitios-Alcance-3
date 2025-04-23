@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-//import { useDispatch } from "react-redux";
-// import { logout } from '../../redux/slices/authSlice';
+import { useDispatch } from "react-redux";
+import { logout } from '../../redux/slices/loginSlice';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const menuItems = [
     {
@@ -20,10 +20,10 @@ const Sidebar: React.FC = () => {
     },
   ];
 
-  /* const handleLogout = () => {
+   const handleLogout = () => {
     dispatch(logout());
   };
- */
+ 
   return (
     <div className="bg-gray-900 text-white h-full flex flex-col w-64">
       <div className="px-4 py-6 flex items-center">
@@ -74,7 +74,7 @@ const Sidebar: React.FC = () => {
 
       <div className="p-4 border-t border-blue-800">
         <button
-          // onClick={handleLogout}
+           onClick={handleLogout}
           className="flex items-center text-blue-100 hover:text-white w-full"
         >
           <svg

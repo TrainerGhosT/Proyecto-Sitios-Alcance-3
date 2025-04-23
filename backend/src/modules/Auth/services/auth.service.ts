@@ -20,7 +20,7 @@ export class AuthService {
     const usuario = await this.usuarioRepository.findOne({
       where: { Nombre: loginDto.Usuario },
     });
-
+  
     if (!usuario) {
       throw new BadRequestException({
         Usuario: loginDto.Usuario,
@@ -28,36 +28,56 @@ export class AuthService {
         message: 'Usuario y/o contraseña incorrectos',
       });
     }
-
+  
+    // Verificar si el usuario ya está bloqueado
+    if (usuario.Bloqueado) {
+      throw new UnauthorizedException({
+        Usuario: usuario.Nombre,
+        Resultado: false,
+        message: 'Usuario bloqueado por exceso de intentos fallidos. Contacte al administrador.',
+      });
+    }
+  
     const isPasswordValid = await bcrypt.compare(
       loginDto.Contrasenia,
       usuario.Contrasenia,
     );
-
+  
     if (!isPasswordValid) {
       // Incrementar intentos fallidos
       usuario.IntentosFallidos = (usuario.IntentosFallidos || 0) + 1;
+      
+      // Bloquear usuario después de 3 intentos fallidos
+      if (usuario.IntentosFallidos >= 3) {
+        usuario.Bloqueado = true;
+        await this.usuarioRepository.save(usuario);
+        
+        throw new UnauthorizedException({
+          Usuario: usuario.Nombre,
+          Resultado: false,
+          message: 'Usuario bloqueado por exceso de intentos fallidos. Contacte al administrador.',
+        });
+      }
+      
       await this.usuarioRepository.save(usuario);
-
+  
       throw new UnauthorizedException({
         Usuario: usuario.Nombre,
         Resultado: false,
-        message: 'Usuario y/o contraseña incorrectos',
+        message: `Usuario y/o contraseña incorrectos. Intentos restantes: ${3 - usuario.IntentosFallidos}`,
       });
     }
-
+  
     // Actualizar último acceso y resetear intentos fallidos
     usuario.UltimoAcceso = new Date();
     usuario.IntentosFallidos = 0;
     await this.usuarioRepository.save(usuario);
-
+  
     // Retornar respuesta exitosa
     return {
-      
       Usuario: usuario.Nombre,
       Resultado: true,
     };
-    
   }
 
   async register(registerDto: RegisterDto) {
