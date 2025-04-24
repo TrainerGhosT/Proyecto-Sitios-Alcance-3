@@ -50,7 +50,7 @@ const Oferentes: React.FC = () => {
   }, [dispatch, idPuesto]);
 
   const handleOferenteClick = (oferente: Oferente) => {
-    navigate(`/oferente/${oferente.identificacion}`);
+    navigate(`/oferente/${oferente.IdOferente}`);
   };
 
   const handleRegresar = () => {

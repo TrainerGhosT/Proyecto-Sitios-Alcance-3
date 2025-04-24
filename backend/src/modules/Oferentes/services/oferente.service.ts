@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Oferente } from '../../../entities/oferente.entity';
@@ -90,5 +94,34 @@ export class OferenteService {
   private calcularEdad(fechaNac: Date): number {
     if (!fechaNac) return 0;
     return moment().diff(moment(fechaNac), 'years');
+  }
+
+  async obtenerOferentePorId(id: number): Promise<Oferente> {
+    try {
+      const oferente = await this.oferenteRepository.findOne({
+        where: { IdOferente: id },
+        relations: [
+          'distrito',
+          'correos',
+          'telefonos',
+          'experienciasLaborales',
+          'concursos',
+          'preparaciones',
+          'entrevistas',
+          'referencias',
+        ],
+      });
+
+      if (!oferente) {
+        throw new NotFoundException('Oferente no encontrado');
+      }
+
+      return oferente;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Error al consultar oferente');
+    }
   }
 }
