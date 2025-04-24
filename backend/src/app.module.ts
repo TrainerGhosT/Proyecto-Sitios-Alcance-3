@@ -6,6 +6,7 @@ import { AuthModule } from './modules/Auth/auth.module';
 
 import { PuestoModule } from './modules/Puestos/puesto.module';
 import { OferentesModule } from './modules/Oferentes/oferente.module';
+import { EmpleadoModule } from './modules/Empleado/empleado.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { OferentesModule } from './modules/Oferentes/oferente.module';
     }),
     AuthModule,
     PuestoModule,
-    OferentesModule
+    OferentesModule,
+    EmpleadoModule
   ],
   controllers: [],
   providers: [],

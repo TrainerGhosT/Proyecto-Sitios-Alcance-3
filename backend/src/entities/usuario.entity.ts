@@ -37,6 +37,10 @@ export class Usuario {
   @Column({ nullable: true })
   IntentosFallidos: number;
 
+  @ApiProperty()
+  @Column({ default: false })
+  Bloqueado: boolean;
+
   @ApiProperty({ type: () => [Bitacora] })
   @OneToMany(() => Bitacora, bitacora => bitacora.usuario)
   bitacoras: Bitacora[];
