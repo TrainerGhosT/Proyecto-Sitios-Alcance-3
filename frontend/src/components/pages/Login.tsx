@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginStart, loginSuccess, loginFailure } from '../../redux/slices/loginSlice';
-import { login } from '../../api/loginApi';  
+import { login } from '../../api/loginApi';
 import Button from '../common/Button';
 import { AppDispatch, RootState } from '../../redux/store';
 
@@ -17,6 +17,8 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).+$/;
 
     if (!username) {
       usernameRef.current?.focus();
@@ -34,6 +36,18 @@ const Login: React.FC = () => {
       return;
     }
 
+    // Validación de complejidad de contraseña
+    if (!passwordRegex.test(password)) {
+      dispatch(
+        loginFailure({
+          message: 'La contraseña debe contener mayúsculas, minúsculas y al menos un carácter especial.',
+          errorType: 'authError',
+        })
+      );
+      passwordRef.current?.focus();
+      return;
+    }
+
     dispatch(loginStart());
 
     try {
@@ -41,7 +55,7 @@ const Login: React.FC = () => {
 
       const formattedUserData = {
         Nombre: userData.Usuario,
-        Contrasenia: password
+        Contrasenia: password,
       };
 
       dispatch(loginSuccess(formattedUserData));
@@ -77,10 +91,10 @@ const Login: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sistema de Administración
+            Tarea 2.
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Servicios Médicos SA
+            Programación V - Los 4 mares.
           </p>
         </div>
 

@@ -34,7 +34,7 @@ export class AuthService {
       throw new UnauthorizedException({
         Usuario: usuario.Nombre,
         Resultado: false,
-        message: 'Usuario bloqueado por exceso de intentos fallidos. Contacte al administrador.',
+        message: 'Usuario y/o contraseña incorrectos. Contacte al administrador.',
       });
     }
   
@@ -55,7 +55,7 @@ export class AuthService {
         throw new UnauthorizedException({
           Usuario: usuario.Nombre,
           Resultado: false,
-          message: 'Usuario bloqueado por exceso de intentos fallidos. Contacte al administrador.',
+          message: 'Usuario y/o contraseña incorrectos. Contacte al administrador.',
         });
       }
       
