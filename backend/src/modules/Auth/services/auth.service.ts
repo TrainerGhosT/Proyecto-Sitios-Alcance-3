@@ -25,7 +25,7 @@ export class AuthService {
       throw new BadRequestException({
         Usuario: loginDto.Usuario,
         Resultado: false,
-        message: 'Usuario y/o contraseña incorrectos',
+        message: 'Usuario y/o contraseña incorrectos.',
       });
     }
   
@@ -34,7 +34,7 @@ export class AuthService {
       throw new UnauthorizedException({
         Usuario: usuario.Nombre,
         Resultado: false,
-        message: 'Usuario y/o contraseña incorrectos. Contacte al administrador.',
+        message: 'Usuario y/o contraseña incorrectos.',
       });
     }
   
@@ -55,7 +55,7 @@ export class AuthService {
         throw new UnauthorizedException({
           Usuario: usuario.Nombre,
           Resultado: false,
-          message: 'Usuario y/o contraseña incorrectos. Contacte al administrador.',
+          message: 'Usuario y/o contraseña incorrectos.',
         });
       }
       
@@ -64,7 +64,7 @@ export class AuthService {
       throw new UnauthorizedException({
         Usuario: usuario.Nombre,
         Resultado: false,
-        message: `Usuario y/o contraseña incorrectos. Intentos restantes: ${3 - usuario.IntentosFallidos}`,
+        message: `Usuario y/o contraseña incorrectos.`,
       });
     }
   
